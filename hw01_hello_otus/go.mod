@@ -1,4 +1,4 @@
-module github.com/gomovstepan/go-stadying
+module github.com/gomovstepan/go-stadying/hw01_hello_otus
 
 go 1.16
 
