@@ -6,8 +6,10 @@ import (
 	"unicode"
 )
 
-var ErrInvalidString = errors.New("invalid string")
-var ErrinvalidSimbols = errors.New("invalid simbols")
+var (
+	ErrInvalidString  = errors.New("invalid string")
+	ErrinvalidSimbols = errors.New("invalid simbols")
+)
 
 func Unpack(stroka string) (string, error) {
 	var NewLine strings.Builder

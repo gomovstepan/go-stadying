@@ -43,6 +43,7 @@ func TestUnpackInvalidString(t *testing.T) {
 		})
 	}
 }
+
 func TestUnpackInvalidSimbols(t *testing.T) {
 	invalidSimbols := []string{`\-+`, "d=s*"}
 	for _, tc := range invalidSimbols {
