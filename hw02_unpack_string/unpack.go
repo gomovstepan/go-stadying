@@ -27,24 +27,26 @@ func Unpack(stroka string) (string, error) {
 		if con {
 			con = false
 			continue
-		} else if string(massive[i]) == "\\" {
+		}
+		if string(massive[i]) == "\\" {
 			NewLine.WriteString(string(massive[i+1]))
 			con = true
-		} else if unicode.IsDigit(k) && int(k-'0') != 0 {
+			continue
+		}
+		if unicode.IsDigit(k) && int(k-'0') != 0 {
 			if i < maxLen-1 && unicode.IsDigit(massive[i+1]) {
 				return "", ErrInvalidString
 			}
 			letter := string(massive[i-1])
 			repeatLetters := strings.Repeat(letter, int(k-'0'-1))
 			NewLine.WriteString(repeatLetters)
+			continue
+		}
+		if i != maxLen-1 && string(massive[i+1]) == "0" {
+			con = true
+			continue
 		} else {
-			if i != maxLen-1 && string(massive[i+1]) == "0" {
-				con = true
-				continue
-			} else {
-				NewLine.WriteString(string(massive[i]))
-			}
-
+			NewLine.WriteString(string(massive[i]))
 		}
 	}
 	ResNewLine := NewLine.String()
