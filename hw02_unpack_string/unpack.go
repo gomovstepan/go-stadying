@@ -19,7 +19,7 @@ func Unpack(stroka string) (string, error) {
 	if unicode.IsDigit(massive[0]) {
 		return "", ErrInvalidString
 	}
-	var con bool = false
+	var con bool
 	for i, k := range massive {
 		if !unicode.IsDigit(k) && !unicode.IsLetter(k) && string(massive[i]) != "\\" {
 			return "", ErrinvalidSimbols
