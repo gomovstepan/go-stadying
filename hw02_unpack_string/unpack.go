@@ -31,15 +31,16 @@ func Unpack(stroka string) (string, error) {
 			continue
 		}
 		if string(massive[i]) == "\\" {
-			if i < maxLen-1 {
+			switch i < maxLen-1 {
+			case true:
 				NewLine.WriteString(string(massive[i+1]))
 				con = true
 				continue
-			} else {
+			default:
 				return "", ErrInvalidString
 			}
 		}
-		if unicode.IsDigit(k) && int(k-'0') != 0 {
+		if unicode.IsDigit(k) {
 			if i < maxLen-1 && unicode.IsDigit(massive[i+1]) {
 				return "", ErrInvalidString
 			}
