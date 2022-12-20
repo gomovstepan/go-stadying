@@ -12,18 +12,26 @@ var (
 )
 
 func Unpack(stroka string) (string, error) {
-	var NewLine strings.Builder
 	massive := []rune(stroka)
-	maxLen := len(massive)
 	if len(massive) == 0 {
 		return "", nil
 	}
 	if unicode.IsDigit(massive[0]) {
 		return "", ErrInvalidString
 	}
+	ResNewLine, err := Iteration(massive)
+	if err != nil {
+		return "", err
+	}
+	return ResNewLine, nil
+}
+
+func Iteration(massive []rune) (string, error) {
+	var NewLine strings.Builder
+	maxLen := len(massive)
 	var con bool
 	for i, k := range massive {
-		if !unicode.IsDigit(k) && !unicode.IsLetter(k) && string(massive[i]) != "\\" {
+		if TestSimbols(k) {
 			return "", ErrinvalidSimbols
 		}
 		if con {
@@ -33,6 +41,9 @@ func Unpack(stroka string) (string, error) {
 		if string(massive[i]) == "\\" {
 			switch i < maxLen-1 {
 			case true:
+				if unicode.IsLetter(massive[i+1]) {
+					return "", ErrInvalidString
+				}
 				NewLine.WriteString(string(massive[i+1]))
 				con = true
 				continue
@@ -58,4 +69,11 @@ func Unpack(stroka string) (string, error) {
 	}
 	ResNewLine := NewLine.String()
 	return ResNewLine, nil
+}
+
+func TestSimbols(letter rune) bool {
+	if !unicode.IsDigit(letter) && !unicode.IsLetter(letter) && string(letter) != "\\" && string(letter) != "\n" {
+		return true
+	}
+	return false
 }
