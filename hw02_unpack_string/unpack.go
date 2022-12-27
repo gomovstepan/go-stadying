@@ -27,11 +27,10 @@ func Unpack(stroka string) (string, error) {
 }
 
 func Iteration(massive []rune) (string, error) {
-	var NewLine strings.Builder
-	maxLen := len(massive)
+	var NewString strings.Builder
 	var con bool
 	for i, k := range massive {
-		if TestSimbols(k) {
+		if TestOnIncorrectSimbols(k) {
 			return "", ErrinvalidSimbols
 		}
 		if con {
@@ -39,12 +38,12 @@ func Iteration(massive []rune) (string, error) {
 			continue
 		}
 		if string(massive[i]) == "\\" {
-			switch i < maxLen-1 {
+			switch i < len(massive)-1 {
 			case true:
 				if unicode.IsLetter(massive[i+1]) {
 					return "", ErrInvalidString
 				}
-				NewLine.WriteString(string(massive[i+1]))
+				NewString.WriteString(string(massive[i+1]))
 				con = true
 				continue
 			default:
@@ -52,26 +51,25 @@ func Iteration(massive []rune) (string, error) {
 			}
 		}
 		if unicode.IsDigit(k) {
-			if i < maxLen-1 && unicode.IsDigit(massive[i+1]) {
+			if i < len(massive)-1 && unicode.IsDigit(massive[i+1]) {
 				return "", ErrInvalidString
 			}
 			letter := string(massive[i-1])
 			repeatLetters := strings.Repeat(letter, int(k-'0'-1))
-			NewLine.WriteString(repeatLetters)
+			NewString.WriteString(repeatLetters)
 			continue
 		}
-		if i != maxLen-1 && string(massive[i+1]) == "0" {
+		if i != len(massive)-1 && string(massive[i+1]) == "0" {
 			con = true
 			continue
 		} else {
-			NewLine.WriteString(string(massive[i]))
+			NewString.WriteString(string(massive[i]))
 		}
 	}
-	ResNewLine := NewLine.String()
-	return ResNewLine, nil
+	return NewString.String(), nil
 }
 
-func TestSimbols(letter rune) bool {
+func TestOnIncorrectSimbols(letter rune) bool {
 	if !unicode.IsDigit(letter) && !unicode.IsLetter(letter) && string(letter) != "\\" && string(letter) != "\n" {
 		return true
 	}
